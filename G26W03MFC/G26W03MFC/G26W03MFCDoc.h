@@ -35,6 +35,13 @@ public:
 		SetModifiedFlag();
 	}
 
+	void RemoveLast() {
+		if (Points.GetCount() > 0) {
+			Points.RemoveAt(Points.GetCount() - 1);
+			SetModifiedFlag();
+		}
+	}
+
 // 작업입니다.
 public:
 
