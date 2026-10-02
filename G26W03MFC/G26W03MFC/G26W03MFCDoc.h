@@ -18,7 +18,10 @@ protected:
 	CPoint Point = CPoint(-100, -100);
 public:
 	CPoint GetPoint() { return Point; }
-	void SetPoint(CPoint p) { Point = p; }
+	void SetPoint(CPoint p) { 
+		Point = p; 
+		SetModifiedFlag();
+	}
 
 // 작업입니다.
 public:
