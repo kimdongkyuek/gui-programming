@@ -65,10 +65,36 @@ void CG26W03MFCView::OnDraw(CDC* pDC)
 	//CPoint p = pDoc->GetPoint();
 	//pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
 
+	//------------------------------------
+	CDC memDC;
+	memDC.CreateCompatibleDC(pDC);
+
+	CRect rect;
+	GetClientRect(&rect);
+
+	CBitmap bmp;
+	bmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());
+
+	CBitmap* old = memDC.SelectObject(&bmp);
+
+	memDC.FillSolidRect(rect, RGB(255, 255, 255));
+	//------------------------------------
+
 	for (int i = 0; i < pDoc->GetPointsCount(); i++) {
 		CPoint p = pDoc->GetPoint(i);
-		pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
+		//pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
+		memDC.Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
 	}
+
+	//------------------------------------
+	pDC->BitBlt(0, 0,
+		rect.Width(), rect.Height(),
+		&memDC,
+		0, 0,
+		SRCCOPY);
+
+	memDC.SelectObject(old);
+	//------------------------------------
 }
 
 
