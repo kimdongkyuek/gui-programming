@@ -24,6 +24,10 @@ ipch/
 *.recipe
 *.pch
 
+# .NET 빌드 산출물
+bin/
+obj/
+
 # OS
 Thumbs.db
 Desktop.ini
