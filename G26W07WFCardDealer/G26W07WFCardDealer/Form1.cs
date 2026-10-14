@@ -1,37 +1,46 @@
-namespace G26W07WFCardDealer
-{
-    public partial class Form1 : Form
-    {
-        public Form1()
-        {
+﻿using G26W07WFCardDealer.Model;
+
+namespace G26W07WFCardDealer {
+    public partial class Form1 : Form {
+        private readonly Deck deck = new Deck();
+        private PictureBox[] cardBoxes = [];
+
+        public Form1() {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+        private void Form1_Load(object sender, EventArgs e) {
+            cardBoxes = [card1, card2, card3, card4, card5];
         }
 
-        private void OnDeal(object sender, EventArgs e)
-        {
-            string[] suits = ["spades", "hearts", "diamonds", "clubs"];
-            string[] values = ["ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"];
+        private void OnDeal(object sender, EventArgs e) {
+            deck.Reset();                                   // 52장으로 되돌리고
+            deck.Shuffle();                                 // 섞은 다음
+            List<Card> hand = deck.Deal(cardBoxes.Length);  // 5장을 떼어낸다 (중복 불가)
 
-            Random random = new Random();
-            int card = random.Next(suits.Length * values.Length);
+            for (int i = 0; i < cardBoxes.Length; i++) {
+                cardBoxes[i].Image = LoadCardImage(hand[i]);
+            }
+        }
 
-            string suit = suits[card / values.Length];
-            string value = values[card % values.Length];
+        // 모델의 Card를 리소스 이름으로 바꾸는 일은 View 담당.
+        // 그림이 2벌인 것도 이미지 쪽 사정이라 모델이 알 필요가 없다.
+        private static Image LoadCardImage(Card card) {
+            string value = card.Rank switch {
+                Rank.Ace => "ace",
+                Rank.Jack => "jack",
+                Rank.Queen => "queen",
+                Rank.King => "king",
+                _ => ((int)card.Rank).ToString()
+            };
 
-            if (value is "jack" or "queen" or "king")
-            {
+            string suit = card.Suit.ToString().ToLower();
+
+            if (card.IsFace) {
                 suit += "2";
             }
 
-            string name = $"{value}_of_{suit}";
-
-            card1.Image = Properties.Resources.ResourceManager
-                .GetObject(name) as Image
+            return Properties.Resources.ResourceManager.GetObject($"{value}_of_{suit}") as Image
                 ?? Properties.Resources.red_joker;
         }
     }
