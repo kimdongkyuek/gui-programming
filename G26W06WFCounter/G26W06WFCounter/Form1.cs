@@ -12,5 +12,13 @@
             //labelCount.Text = "" + ++count;
         }
 
+        private void OnSub(object sender, EventArgs e) {
+            labelCount.Text = $"{--count}";
+        }
+
+        private void OnReset(object sender, EventArgs e) {
+            count = 0;
+            labelCount.Text = $"{count}";
+        }
     }
 }

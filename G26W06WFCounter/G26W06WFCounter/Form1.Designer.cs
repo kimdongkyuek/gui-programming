@@ -31,6 +31,8 @@
             components = new System.ComponentModel.Container();
             labelCount = new Label();
             btnAdd = new Button();
+            btnSub = new Button();
+            btnReset = new Button();
             SuspendLayout();
             // 
             // labelCount
@@ -46,18 +48,40 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(140, 170);
+            btnAdd.Location = new Point(40, 170);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(120, 45);
+            btnAdd.Size = new Size(100, 45);
             btnAdd.TabIndex = 1;
             btnAdd.Text = "증가";
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += OnAdd;
             // 
+            // btnSub
+            // 
+            btnSub.Location = new Point(150, 170);
+            btnSub.Name = "btnSub";
+            btnSub.Size = new Size(100, 45);
+            btnSub.TabIndex = 2;
+            btnSub.Text = "감소";
+            btnSub.UseVisualStyleBackColor = true;
+            btnSub.Click += OnSub;
+            // 
+            // btnReset
+            // 
+            btnReset.Location = new Point(260, 170);
+            btnReset.Name = "btnReset";
+            btnReset.Size = new Size(100, 45);
+            btnReset.TabIndex = 3;
+            btnReset.Text = "초기화";
+            btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += OnReset;
+            // 
             // Form1
             // 
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(400, 250);
+            Controls.Add(btnReset);
+            Controls.Add(btnSub);
             Controls.Add(btnAdd);
             Controls.Add(labelCount);
             Name = "Form1";
@@ -69,5 +93,7 @@
 
         private Label labelCount;
         private Button btnAdd;
+        private Button btnSub;
+        private Button btnReset;
     }
 }
