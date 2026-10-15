@@ -29,6 +29,7 @@
             card4 = new PictureBox();
             card5 = new PictureBox();
             btnDeal = new Button();
+            labelRank = new Label();
             ((System.ComponentModel.ISupportInitialize)card1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)card2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)card3).BeginInit();
@@ -86,6 +87,17 @@
             card5.TabIndex = 4;
             card5.TabStop = false;
             // 
+            // labelRank
+            // 
+            labelRank.BackColor = SystemColors.Info;
+            labelRank.Font = new Font("맑은 고딕", 20F, FontStyle.Bold, GraphicsUnit.Point);
+            labelRank.Location = new Point(20, 425);
+            labelRank.Name = "labelRank";
+            labelRank.Size = new Size(460, 50);
+            labelRank.TabIndex = 6;
+            labelRank.Text = "카드를 분배하세요";
+            labelRank.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // btnDeal
             // 
             btnDeal.Location = new Point(519, 430);
@@ -100,7 +112,8 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1372, 500);
+            ClientSize = new Size(1372, 520);
+            Controls.Add(labelRank);
             Controls.Add(btnDeal);
             Controls.Add(card5);
             Controls.Add(card4);
@@ -126,5 +139,6 @@
         private PictureBox card4;
         private PictureBox card5;
         private Button btnDeal;
+        private Label labelRank;
     }
 }

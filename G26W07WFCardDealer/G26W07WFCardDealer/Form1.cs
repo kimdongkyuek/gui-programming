@@ -21,6 +21,9 @@ namespace G26W07WFCardDealer {
             for (int i = 0; i < cardBoxes.Length; i++) {
                 cardBoxes[i].Image = LoadCardImage(hand[i]);
             }
+
+            // 판별은 모델이 하고, View는 결과를 받아 보여주기만 한다
+            labelRank.Text = PokerEvaluator.Evaluate(hand).ToKorean();
         }
 
         // 모델의 Card를 리소스 이름으로 바꾸는 일은 View 담당.
