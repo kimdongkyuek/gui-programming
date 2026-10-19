@@ -135,13 +135,22 @@ namespace G26W07WFSongList {
             });
         }
 
+        // 글자를 칠 때마다 불린다 -> 목록을 다시 그리기만 하면 된다
+        private void OnFilterChanged(object sender, EventArgs e) {
+            LoadSongs();
+        }
+
         // 목록을 다시 채우는 일을 함수 하나로 모았다.
-        // 노래를 추가/삭제한 뒤에도 이 함수만 부르면 화면이 갱신된다.
+        // 노래를 추가/삭제/검색한 뒤에도 이 함수만 부르면 화면이 갱신된다.
         private void LoadSongs() {
             listSong.Items.Clear();     // 비우지 않으면 부를 때마다 중복 추가된다
 
+            string keyword = txtFilter.Text.Trim();
+
             var songs = _db.Songs
                 //.Where(s => s.Rating >= 4)
+                .Where(s => s.Title.ToLower().Contains(keyword) ||
+                    s.Artist.ToLower().Contains(keyword))
                 .OrderByDescending(s => s.Rating)
                 .ToList();
 

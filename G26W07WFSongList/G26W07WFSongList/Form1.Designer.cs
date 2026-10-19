@@ -35,12 +35,22 @@
             btnAdd = new Button();
             txtSelected = new TextBox();
             btnDelete = new Button();
+            txtFilter = new TextBox();
             SuspendLayout();
+            //
+            // txtFilter
+            //
+            txtFilter.Location = new Point(0, 12);
+            txtFilter.Name = "txtFilter";
+            txtFilter.PlaceholderText = "제목 또는 가수 검색";
+            txtFilter.Size = new Size(760, 31);
+            txtFilter.TabIndex = 7;
+            txtFilter.TextChanged += OnFilterChanged;
             //
             // listSong
             //
             listSong.FormattingEnabled = true;
-            listSong.Location = new Point(0, 0);
+            listSong.Location = new Point(0, 55);
             listSong.Name = "listSong";
             listSong.Size = new Size(760, 579);
             listSong.TabIndex = 0;
@@ -49,7 +59,7 @@
             //
             // txtTitle
             //
-            txtTitle.Location = new Point(0, 592);
+            txtTitle.Location = new Point(0, 647);
             txtTitle.Name = "txtTitle";
             txtTitle.PlaceholderText = "제목";
             txtTitle.Size = new Size(300, 31);
@@ -57,7 +67,7 @@
             //
             // txtArtist
             //
-            txtArtist.Location = new Point(306, 592);
+            txtArtist.Location = new Point(306, 647);
             txtArtist.Name = "txtArtist";
             txtArtist.PlaceholderText = "가수";
             txtArtist.Size = new Size(220, 31);
@@ -65,7 +75,7 @@
             //
             // txtRating
             //
-            txtRating.Location = new Point(532, 592);
+            txtRating.Location = new Point(532, 647);
             txtRating.MaxLength = 1;
             txtRating.Name = "txtRating";
             txtRating.PlaceholderText = "평점";
@@ -74,7 +84,7 @@
             //
             // btnAdd
             //
-            btnAdd.Location = new Point(598, 590);
+            btnAdd.Location = new Point(598, 645);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(162, 35);
             btnAdd.TabIndex = 4;
@@ -85,7 +95,7 @@
             // txtSelected
             //
             txtSelected.Enabled = false;
-            txtSelected.Location = new Point(0, 636);
+            txtSelected.Location = new Point(0, 691);
             txtSelected.Name = "txtSelected";
             txtSelected.PlaceholderText = "삭제를 위해 선택된 노래";
             txtSelected.ReadOnly = true;
@@ -96,7 +106,7 @@
             // btnDelete
             //
             btnDelete.Enabled = false;
-            btnDelete.Location = new Point(598, 634);
+            btnDelete.Location = new Point(598, 689);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(162, 35);
             btnDelete.TabIndex = 6;
@@ -108,7 +118,7 @@
             //
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(772, 700);
+            ClientSize = new Size(772, 755);
             Controls.Add(listSong);
             Controls.Add(txtTitle);
             Controls.Add(txtArtist);
@@ -116,6 +126,7 @@
             Controls.Add(btnAdd);
             Controls.Add(txtSelected);
             Controls.Add(btnDelete);
+            Controls.Add(txtFilter);
             Name = "Form1";
             Text = "애창곡";
             ResumeLayout(false);
@@ -130,5 +141,6 @@
         private Button btnAdd;
         private TextBox txtSelected;
         private Button btnDelete;
+        private TextBox txtFilter;
     }
 }
