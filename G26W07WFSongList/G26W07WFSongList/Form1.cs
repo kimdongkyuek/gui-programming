@@ -84,6 +84,41 @@ namespace G26W07WFSongList {
             txtTitle.Focus();
         }
 
+        // ListBox에서 선택이 바뀔 때마다 불린다.
+        // is not Song song  -> Song 타입인지 검사하면서 맞으면 song 변수를 바로 만든다 (패턴 매칭)
+        private void OnChanged(object sender, EventArgs e) {
+            if (listSong.SelectedItem is not Song song) {
+                txtSelected.Clear();
+                btnDelete.Enabled = false;      // 고를 게 없으면 삭제 버튼을 잠근다
+                return;
+            }
+
+            txtSelected.Text = song.ToString();
+            btnDelete.Enabled = true;
+        }
+
+        private void OnDelete(object sender, EventArgs e) {
+            if (listSong.SelectedItem is not Song song)
+                return;
+
+            var result = MessageBox.Show(
+                $"{song.ToString()}\n\n노래를 삭제할까요?",
+                "삭제 확인",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)     // 되돌릴 수 없으니 한 번 더 확인
+                return;
+
+            _db.Songs.Remove(song);
+            _db.SaveChanges();
+
+            LoadSongs();
+
+            txtSelected.Clear();
+            btnDelete.Enabled = false;
+        }
+
         // 목록을 다시 채우는 일을 함수 하나로 모았다.
         // 노래를 추가/삭제한 뒤에도 이 함수만 부르면 화면이 갱신된다.
         private void LoadSongs() {
