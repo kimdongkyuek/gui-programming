@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace G26W07WFSongList {
 
@@ -117,6 +118,21 @@ namespace G26W07WFSongList {
 
             txtSelected.Clear();
             btnDelete.Enabled = false;
+        }
+
+        private void OnYouTube(object sender, EventArgs e) {
+            // 혹시 빈 공간 더블클릭할까봐 검사
+            if (listSong.SelectedItem is not Song song)
+                return;
+
+            // 공백, 한글, 특수문자를 URL에 넣을 수 있는 형태로 바꿔준다
+            string query = Uri.EscapeDataString($"노래방 {song.Title} {song.Artist}");
+
+            // UseShellExecute = true -> exe가 아니라 URL이므로 OS에게 맡긴다 (기본 브라우저가 열림)
+            Process.Start(new ProcessStartInfo(
+                $"https://www.youtube.com/results?search_query={query}") {
+                UseShellExecute = true
+            });
         }
 
         // 목록을 다시 채우는 일을 함수 하나로 모았다.
