@@ -2,23 +2,8 @@
 
 namespace G26W07WFSongList {
 
-    public record Song(string Title, string Artist, int Rating) {
-        // 이름이 Id면 EF Core가 Primary Key로 인식한다.
-        // set 대신 init -> DB가 값을 넣는 것은 허용하고, 이후 수정은 막는다.
-        public int Id { get; init; }
-
-        public override string ToString() => $"{Title} - [{Artist}] (⭐{Rating})";
-    }
-
-    public class AppDbContext : DbContext {
-        public DbSet<Song> Songs { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            // songs.db 파일로 저장
-            optionsBuilder.UseSqlite("Data Source=songs.db");
-        }
-    }
-
+    // 디자이너가 Form1을 찾으려면 Form1이 파일의 첫 번째 클래스여야 한다.
+    // (Song, AppDbContext를 위에 두면 디자이너에서 오류가 난다 -> 아래로 옮김)
     public partial class Form1 : Form {
         //private List<Song> _songs = [];
         private AppDbContext _db = new AppDbContext();
@@ -57,13 +42,77 @@ namespace G26W07WFSongList {
                 _db.SaveChanges();
             }
 
-            var filteredSongs = _db.Songs
-                .Where(s => s.Rating >= 4)
-                .OrderByDescending(s => s.Rating);
+            //var filteredSongs = _db.Songs
+            //    .Where(s => s.Rating >= 4)
+            //    .OrderByDescending(s => s.Rating);
 
-            foreach (var song in filteredSongs) {
-                listSong.Items.Add(song);
+            //foreach (var song in filteredSongs) {
+            //    listSong.Items.Add(song);
+            //}
+
+            LoadSongs();
+        }
+
+        private void OnAdd(object sender, EventArgs e) {
+            string title = txtTitle.Text.Trim();
+            string artist = txtArtist.Text.Trim();
+
+            if (title.Length == 0 || artist.Length == 0) {
+                MessageBox.Show("제목과 가수를 모두 입력하세요.");
+                return;
             }
+
+            // TryParse: 숫자로 못 바꾸면 예외 대신 false를 돌려준다 (out으로 결과를 받음)
+            if (!int.TryParse(txtRating.Text, out int rating) || rating < 1 || rating > 5) {
+                MessageBox.Show("평점은 1~5 사이의 숫자로 입력하세요.");
+                txtRating.SelectAll();
+                txtRating.Focus();
+                return;
+            }
+
+            // Id는 넘기지 않는다 -> DB가 AUTOINCREMENT로 부여
+            var song = new Song(title, artist, rating);
+
+            _db.Songs.Add(song);        // 메모리에만 반영
+            _db.SaveChanges();          // 실제로 songs.db에 기록
+
+            LoadSongs();                // 화면 갱신
+
+            txtTitle.Clear();
+            txtArtist.Clear();
+            txtRating.Clear();
+            txtTitle.Focus();
+        }
+
+        // 목록을 다시 채우는 일을 함수 하나로 모았다.
+        // 노래를 추가/삭제한 뒤에도 이 함수만 부르면 화면이 갱신된다.
+        private void LoadSongs() {
+            listSong.Items.Clear();     // 비우지 않으면 부를 때마다 중복 추가된다
+
+            var songs = _db.Songs
+                //.Where(s => s.Rating >= 4)
+                .OrderByDescending(s => s.Rating)
+                .ToList();
+
+            foreach (var song in songs)
+                listSong.Items.Add(song);
+        }
+    }
+
+    public record Song(string Title, string Artist, int Rating) {
+        // 이름이 Id면 EF Core가 Primary Key로 인식한다.
+        // set 대신 init -> DB가 값을 넣는 것은 허용하고, 이후 수정은 막는다.
+        public int Id { get; init; }
+
+        public override string ToString() => $"{Title} - [{Artist}] (⭐{Rating})";
+    }
+
+    public class AppDbContext : DbContext {
+        public DbSet<Song> Songs { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            // songs.db 파일로 저장
+            optionsBuilder.UseSqlite("Data Source=songs.db");
         }
     }
 }
